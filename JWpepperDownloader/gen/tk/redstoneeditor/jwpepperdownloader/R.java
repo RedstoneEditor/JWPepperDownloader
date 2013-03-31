@@ -24,8 +24,6 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int TextView01=0x7f09000d;
-        public static final int TextView02=0x7f09000e;
         public static final int action_settings=0x7f09000f;
         public static final int buttonBrowse=0x7f09000a;
         public static final int buttonDownload=0x7f09000c;
@@ -34,6 +32,8 @@ public final class R {
         public static final int id=0x7f090006;
         public static final int name=0x7f090008;
         public static final int page=0x7f090001;
+        public static final int pause=0x7f09000e;
+        public static final int play=0x7f09000d;
         public static final int rpp=0x7f090002;
         public static final int term=0x7f090000;
         public static final int textView1=0x7f090005;
@@ -48,7 +48,7 @@ public final class R {
         public static final int activity_browse=0x7f030000;
         public static final int activity_download=0x7f030001;
         public static final int activity_main=0x7f030002;
-        public static final int listitem=0x7f030003;
+        public static final int activity_mediaplayer=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f080000;

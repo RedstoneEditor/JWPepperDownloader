@@ -50,6 +50,25 @@ public class Download extends Activity
 			.show();
 
 	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		unregisterReceiver(receiver);
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		unregisterReceiver(receiver);
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		registerReceiver(receiver, new IntentFilter(
+							 DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+	}
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
