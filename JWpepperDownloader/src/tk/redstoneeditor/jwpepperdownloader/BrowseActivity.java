@@ -31,15 +31,17 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.*;
 
 public class BrowseActivity extends ListActivity implements Runnable {
 	EditText term;
-	EditText pn;
-	EditText rn;
+	TextView pn;
 	Document doc;
 	ProgressDialog p;
 	private boolean done;
 	protected static final int GUIUPDATEIDENTIFIER = 0x101;
+
+	private int pageNum = 1;
 
 	public String filename(String s) { // gets filename without extension
 		int dot = s.lastIndexOf(".item");
@@ -57,10 +59,9 @@ public class BrowseActivity extends ListActivity implements Runnable {
 					.connect(
 							"http://www.jwpepper.com/sheet-music/search.jsp?keywords="
 									+ Uri.encode("" + term.getText())
-									+ "&perPage="
-									+ rn.getText()
+									+ "&perPage=20"
 									+ "&startIndex="
-									+ (Integer.parseInt(pn.getText().toString()) * Integer.parseInt(rn.getText().toString()) - Integer.parseInt(rn.getText().toString())))
+									+ (pageNum * 20 - 20))
 					.timeout(1000000000).get();
 		} catch (IOException e) {
 			Toast.makeText(BrowseActivity.this, "Failed to connect",
@@ -136,45 +137,49 @@ public class BrowseActivity extends ListActivity implements Runnable {
 						position - lv.getFirstVisiblePosition()).findViewById(
 						android.R.id.text2);
 				String keyword = txt.getText().toString();
-				Intent it = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.parse("http://www.jwpepper.com/mp3/" + keyword
-						+ ".mp3");
-				it.setDataAndType(uri, "audio/mp3");
-				startActivity(it);
+				
 
+Intent i = new Intent(BrowseActivity.this, MediaPlayerActivity.class);
+i.putExtra("id", keyword);
+startActivity(i);
 			}
 
 		});
 		setListAdapter(sa);
 		term = (EditText) findViewById(R.id.term);
-		pn = (EditText) findViewById(R.id.page);
-		rn = (EditText) findViewById(R.id.rpp);
+		pn = (TextView) findViewById(R.id.page);
+		
 		Button search = (Button) findViewById(R.id.buttonSearch);
 		search.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				if (!term.getText().toString().equals("")
-						&& !pn.getText().toString().equals("")
-						&& !rn.getText().toString().equals("")) {
-					progressDialog = new ProgressDialog(BrowseActivity.this);
-					progressDialog
-							.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-					progressDialog.setMessage("Please wait...");
-					progressDialog.show();
-					setListAdapter(null);
-					StatesAndCapitals = null;
-					Log.v("CLEARED LIST", "List cleared");
-					list = new ArrayList<HashMap<String, String>>();
-					new Thread(BrowseActivity.this).start();
-				} else {
-					Toast.makeText(BrowseActivity.this,
-							"Please fill in all fields!", Toast.LENGTH_LONG)
-							.show();
-				}
+				pageNum = 1;
+                updateList();
 			}
+
+	
 		});
 	}
-
+	public void updateList()
+	{
+		if (!term.getText().toString().equals("")) {
+			pn.setText("Page: " + pageNum);
+			progressDialog = new ProgressDialog(BrowseActivity.this);
+			progressDialog
+				.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progressDialog.setMessage("Please wait...");
+			progressDialog.show();
+			setListAdapter(null);
+			StatesAndCapitals = null;
+			Log.v("CLEARED LIST", "List cleared");
+			list = new ArrayList<HashMap<String, String>>();
+			new Thread(BrowseActivity.this).start();
+		} else {
+			Toast.makeText(BrowseActivity.this,
+						   "Please fill in all fields!", Toast.LENGTH_LONG)
+				.show();
+		}
+	}
 	public void showDownload() {
 		Intent i = new Intent();
 		i.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
@@ -198,5 +203,26 @@ public class BrowseActivity extends ListActivity implements Runnable {
 			}
 		}
 	};
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()){
+			case R.id.previous:
+			if(pageNum > 1)
+			pageNum--;
+			updateList();
+			return true;
+			case R.id.next:
+			pageNum++;
+			updateList();
+		    return true;
+			default:
+			return super.onOptionsItemSelected(item);
+		}
+		}
 }

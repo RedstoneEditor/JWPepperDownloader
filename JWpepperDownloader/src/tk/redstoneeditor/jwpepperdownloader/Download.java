@@ -38,8 +38,13 @@ public class Download extends Activity
 		Request request = new Request(Uri
 									  .parse("http://www.jwpepper.com/mp3/" + id
 											 + ".mp3"));
-		if (name != "")
+		if (!name.equals(""))
 		{
+			request.setDestinationInExternalPublicDir(
+				Environment.DIRECTORY_DOWNLOADS, name
+				+ ".mp3");
+		} else {
+			name = id;
 			request.setDestinationInExternalPublicDir(
 				Environment.DIRECTORY_DOWNLOADS, name
 				+ ".mp3");
@@ -54,7 +59,7 @@ public class Download extends Activity
 	@Override
 	public void onPause(){
 		super.onPause();
-		unregisterReceiver(receiver);
+		//unregisterReceiver(receiver);
 	}
 	
 	@Override

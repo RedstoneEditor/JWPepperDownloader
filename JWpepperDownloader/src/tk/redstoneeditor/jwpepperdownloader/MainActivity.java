@@ -47,11 +47,15 @@ Intent i = new Intent(MainActivity.this, Download.class);
 		});
 		preview.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent it = new Intent(Intent.ACTION_VIEW);
-				Uri uri = Uri.parse("http://www.jwpepper.com/mp3/"
-						+ id.getText() + ".mp3");
-				it.setDataAndType(uri, "audio/mp3");
-				startActivity(it);
+				//Intent it = new Intent(Intent.ACTION_VIEW);
+				//Uri uri = Uri.parse("http://www.jwpepper.com/mp3/"
+				//		+ id.getText() + ".mp3");
+				//it.setDataAndType(uri, "audio/mp3");
+				//startActivity(it);
+				
+				Intent i = new Intent(MainActivity.this, MediaPlayerActivity.class);
+				i.putExtra("id", id.getText().toString());
+				startActivity(i);
 			}
 		});
 	}
@@ -63,4 +67,5 @@ Intent i = new Intent(MainActivity.this, Download.class);
 		return true;
 	}
 
+	
 }

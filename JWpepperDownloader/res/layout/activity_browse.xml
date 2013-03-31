@@ -10,37 +10,25 @@
 
         <EditText
             android:id="@+id/term"
-            android:layout_width="82dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:ems="10" >
 
             <requestFocus />
         </EditText>
-
-        <EditText
-            android:id="@+id/page"
-            android:layout_width="44dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.33"
-            android:ems="10"
-            android:inputType="number" 
-            android:hint="Page #"/>
-
-        <EditText
-            android:id="@+id/rpp"
-            android:layout_width="52dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.43"
-            android:ems="10"
-            android:inputType="number" 
-            android:hint="# Results"/>
-
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/search" />
+			
+		<TextView
+			android:id="@+id/page"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text="Page:    "/>
+			
     </LinearLayout>
 
     <ListView android:layout_height="wrap_content"
